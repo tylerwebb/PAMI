@@ -282,6 +282,11 @@ class ClientImpl implements IClient
                 $bMsg .= 'ActionId: ' . $this->_lastActionId . "\r\n" . $aMsg;
                 $event = $this->_messageToEvent($bMsg);
                 $response = $this->findResponse($event);
+				// make sure it's an object before trying to addEvent() on it
+				if ($response === FALSE) {
+					error_log('Pami:' . __LINE__ . ' - findResponse = FALSE, event = ' . print_r($event, true));
+					continue;
+				}
                 $response->addEvent($event);
     	    }
     	    if ($this->_logger->isDebugEnabled()) {
